@@ -9,6 +9,6 @@ from typing import Sequence
 
 def check_fibonacci(data: Sequence[int]) -> bool:
     for i in range(1, len(data) - 1):
-        if data[i+1] != data[i] + data[i - 1]:
+        if data[i + 1] != data[i] + data[i - 1]:
             return False
     return True

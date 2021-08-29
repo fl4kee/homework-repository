@@ -18,10 +18,8 @@ def find_maximum_and_minimum(file_name: str) -> Tuple[int, int]:
         for line in file:
             if min_ is None and max_ is None:
                 min_ = max_ = int(line)
-            if int(line) > max_:
-                max_ = int(line)
-            if int(line) < min_:
-                min_ = int(line)
+            max_ = int(line) if int(line) > max_ else max_
+            min_ = int(line) if int(line) < min_ else min_
         if min_ is not None and max_ is not None:
             return (min_, max_)
         return (0, 0)

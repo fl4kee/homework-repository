@@ -5,13 +5,11 @@ Given four lists A, B, C, D of integer values,
     there are such that A[i] + B[j] + C[k] + D[l] is zero.
 We guarantee, that all A, B, C, D have same length of N where 0 ≤ N ≤ 1000.
 """
-import time
 from typing import List
 
-start = time.perf_counter()
 
+def sum_two_arrs(arr1: List[int], arr2: List[int]) -> List[int]:
 
-def sum_two_arrs(arr1, arr2):
     sum_ = []
     for i in range(len(arr1)):
         for j in range(len(arr1)):
@@ -19,7 +17,7 @@ def sum_two_arrs(arr1, arr2):
     return sum_
 
 
-def count_zeroes(arr1, arr2):
+def count_zeroes(arr1: List[int], arr2: List[int]) -> int:
     count = sum_two_arrs(arr1, arr2)
     return count.count(0)
 
@@ -31,7 +29,4 @@ def check_sum_of_four(a: List[int], b: List[int],
     return count_zeroes(sum1, sum2)
 
 
-# if __name__ == '__main__':
-
-    # finish = time.perf_counter()
-    # print(f'Finished in {round(finish - start, 2)} second(s)')
+print(count_zeroes([1, 3, -4], [-2, 1, -3]))
