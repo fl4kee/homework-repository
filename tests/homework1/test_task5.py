@@ -3,11 +3,10 @@ from homework1.task5 import find_maximal_subarray_sum
 
 def test_find_maximal_subarray_sum_positive():
     assert find_maximal_subarray_sum([1, 3, -1, -3, 5, 3, 6, 7], 3) == 16
-    assert find_maximal_subarray_sum([1, 3, -1, -3, 5, 3, 6, 7], 8) is None
-    assert find_maximal_subarray_sum([], 3) is None
-    assert find_maximal_subarray_sum([1, 2, 3], -1) is None
-    assert find_maximal_subarray_sum([], 0) is None
-    assert find_maximal_subarray_sum([1, 5, 2, 3], None) is None
+    assert find_maximal_subarray_sum([], 3) is 0
+    assert find_maximal_subarray_sum([1, 2, 3], -1) is 0
+    assert find_maximal_subarray_sum([], 0) is 0
+    assert find_maximal_subarray_sum([1, 5, 2, 3], None) is 0
 
 
 def test_maximal_subarray_sum_negative():
