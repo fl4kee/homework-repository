@@ -27,6 +27,3 @@ def check_sum_of_four(a: List[int], b: List[int],
     sum1 = sum_two_arrs(a, b)
     sum2 = sum_two_arrs(c, d)
     return count_zeroes(sum1, sum2)
-
-
-print(count_zeroes([1, 3, -4], [-2, 1, -3]))
