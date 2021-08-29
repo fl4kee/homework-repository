@@ -14,7 +14,12 @@ from typing import Tuple
 
 def find_maximum_and_minimum(file_name: str) -> Tuple[int, int]:
     with open(file_name) as file:
-        array = []
+        min_ = max_ = None
         for line in file:
-            array.append(int(line))
-        return[min(array), max(array)]
+            if min_ is None and max_ is None:
+                min_ = max_ = int(line)
+            if int(line) > max_:
+                max_ = int(line)
+            if int(line) < min_:
+                min_ = int(line)
+        return([min_, max_])
