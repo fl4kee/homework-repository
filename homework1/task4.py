@@ -12,11 +12,11 @@ start = time.perf_counter()
 
 
 def sum_two_arrs(arr1, arr2):
-    sum = []
+    sum_ = []
     for i in range(len(arr1)):
         for j in range(len(arr1)):
             sum.append(arr1[i] + arr2[j])
-    return sum
+    return sum_
 
 
 def count_zeroes(arr1, arr2):

@@ -10,9 +10,8 @@ from typing import List
 
 
 def find_maximal_subarray_sum(nums: List[int], k: int) -> int:
-    if nums and k and 0 < k < len(nums):
-        start_index = k-1
-        arr = [nums[i-start_index:i + 1] for i in range(start_index,
-                                                        len(nums))]
-        arr_sum = [sum(arr[i]) for i in range(len(arr))]
-        return max(arr_sum)
+    start_index = k-1
+    arr = [nums[i-start_index:i + 1] for i in range(start_index,
+                                                    len(nums))]
+    arr_sum = [sum(arr[i]) for i in range(len(arr))]
+    return max(arr_sum)
