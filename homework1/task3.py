@@ -17,4 +17,4 @@ def find_maximum_and_minimum(file_name: str) -> Tuple[int, int]:
         array = []
         for line in file:
             array.append(int(line))
-        return((min(array), max(array)))
+        return[min(array), max(array)]
