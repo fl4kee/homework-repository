@@ -11,13 +11,13 @@ from typing import List
 
 def find_maximal_subarray_sum(nums: List[int], subarray_len: int) -> int:
     array_len = len(nums)
-    # Длина массива должна быть больше 1, длина подмассива больше 1 и не превышает длинну массива
-    if all([array_len > 1, 1 < subarray_len <= array_len]):
-        # Изначальное максимальное значение
+    # Array's length greater than 1, subarray's length greater than 1 but less then array's length
+    if array_len > 1 and 1 < subarray_len <= array_len:
+        # Initial max value
         max_sum = sum(nums[0:2])
-        # i - нижняя граница подмассива
+        # i - start index
         for i in range(0, array_len - subarray_len + 1):
-            # j - длина подмассива
+            # j - subarray's length
             for j in range(2, subarray_len + 1):
                 subarray_sum = sum(nums[i:i + j])
                 max_sum = subarray_sum if subarray_sum > max_sum else max_sum
