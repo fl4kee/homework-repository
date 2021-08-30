@@ -9,7 +9,6 @@ from typing import List
 
 
 def sum_two_arrs(arr1: List[int], arr2: List[int]) -> List[int]:
-
     sum_ = []
     for i in range(len(arr1)):
         for j in range(len(arr1)):
