@@ -1,4 +1,0 @@
-pytest
-pytest-sugar
-flake8
-isort
