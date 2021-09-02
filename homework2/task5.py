@@ -16,19 +16,18 @@ def custom_range(iterable: List, start: str, end=None, step=1) -> List:
     Accepts unique iterable, start index, end index and step
     behaves like built-in range function
     """
-    list = []
+    elements_list = []
     if end is None:
         end = start
         start = iterable[0]
     current_index = iterable.index(start)
-    if end:
-        end_index = iterable.index(end)
+    end_index = iterable.index(end)
     if step >= 1 and current_index < end_index:
         while current_index < end_index:
-            list.append(iterable[current_index])
+            elements_list.append(iterable[current_index])
             current_index += step
     elif step < 0 and end_index < current_index:
         while current_index > end_index:
-            list.append(iterable[current_index])
+            elements_list.append(iterable[current_index])
             current_index += step
-    return list
+    return elements_list

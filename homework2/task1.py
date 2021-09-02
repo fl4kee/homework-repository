@@ -7,6 +7,7 @@ Given a file containing text. Complete using only default collections:
     5) Find most common non ascii char for document
 """
 import string
+from collections import Counter
 from typing import Callable, Dict, List
 
 
@@ -41,16 +42,13 @@ def get_symbols_on_condition(file_path: str, condition: Callable) -> Dict[str, i
     returns all symbols in files filtered by passed condition
     """
     with open(file_path, 'r') as file:
-        symbols: Dict[str, int] = {}
+        symbols: Dict[str, int] = Counter()
         for line in file:
             # replace backlash characters with actual symbols
             decoded_line = line.encode('utf-8').decode('unicode-escape')
             for symbol in decoded_line:
                 if condition(symbol):
-                    if symbol in symbols:
-                        symbols[symbol] += 1
-                    else:
-                        symbols[symbol] = 1
+                    symbols[symbol] += 1
         return symbols
 
 
@@ -67,9 +65,10 @@ def get_longest_diverse_words(file_path: str) -> List[str]:
             for word in words:
                 strip_word = word.strip(string.punctuation)
                 # if word is diverse and not in unique_words adding it to unique_words
-                if len(strip_word) > 0 and is_diverse(strip_word)\
+                strip_word_len = len(strip_word)
+                if strip_word_len > 0 and is_diverse(strip_word)\
                    and strip_word not in unique_words:
-                    unique_words[strip_word] = len(strip_word)
+                    unique_words[strip_word] = strip_word_len
     # return first 10 unique words sorted by descending order
     return sorted(unique_words, key=lambda x: unique_words[x], reverse=True)[:10]
 

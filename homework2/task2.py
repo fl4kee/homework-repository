@@ -20,7 +20,7 @@ def major_and_minor_elem(inp: List) -> Tuple[int, int]:
     Accepts list of unique elements
     Returns the most common and the least common elements
     """
-    elements: Dict[int, int] = Counter()
+    elements: Dict[int, int] = Counter(inp)
     if inp:
         for i in inp:
             elements[i] += 1
