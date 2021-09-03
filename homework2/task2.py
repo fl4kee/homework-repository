@@ -21,11 +21,6 @@ def major_and_minor_elem(inp: List) -> Tuple[int, int]:
     Returns the most common and the least common elements
     """
     elements: Dict[int, int] = Counter(inp)
-    if inp:
-        for i in inp:
-            elements[i] += 1
-    else:
-        return (0, 0)
     sorted_elements = sorted(elements.items(), key=lambda item: item[1])
     most_common = sorted_elements[-1][0]
     least_common = sorted_elements[0][0]
