@@ -7,7 +7,7 @@ import functools
 from typing import Callable
 
 
-def cache(times):
+def cache(times: int) -> Callable:
 
     def cache_decorator(func: Callable) -> Callable:
         """

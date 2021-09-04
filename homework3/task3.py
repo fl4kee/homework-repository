@@ -1,4 +1,7 @@
 # There are multiple bugs in this code. Find them all and write tests for faulty cases.
+from typing import Dict, List
+
+
 class Filter:
     """
         Helper filter class. Accepts a list of single-argument
@@ -7,17 +10,14 @@ class Filter:
     def __init__(self, functions):
         self.functions = functions
 
-    def get_function(self):
-        print(self.functions)
-
-    def apply(self, data):
+    def apply(self, data: List) -> List:
         return [
             item for item in data
             if all(i(item) for i in self.functions)
         ]
 
 
-def make_filter(**keywords):
+def make_filter(**keywords: Dict) -> Filter:
     """
         Generate filter object for specified keywords
     """

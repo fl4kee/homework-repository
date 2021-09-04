@@ -10,17 +10,17 @@ import time
 from multiprocessing import Pool
 
 
-def slow_calculate(value):
+def slow_calculate(value: int) -> int:
     """Some weird voodoo magic calculations"""
     time.sleep(random.randint(1, 3))
     data = hashlib.md5(str(value).encode()).digest()
     return sum(struct.unpack('<' + 'B' * len(data), data))
 
 
-def calc_with_mp(value):
-    value = range(value)
+def calc_with_mp(value: int) -> int:
+    range_value = range(value)
     p = Pool(60)
-    result = p.map(slow_calculate, value)
+    result = p.map(slow_calculate, range_value)
     p.close()
     p.join()
     return sum(result)
