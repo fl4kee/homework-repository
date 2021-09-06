@@ -26,6 +26,3 @@ def calc_with_mp(value: int) -> int:
     return sum(result)
 
 
-if __name__ == '__main__':
-    value = 500
-    print(calc_with_mp(value))
