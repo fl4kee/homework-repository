@@ -24,5 +24,3 @@ def calc_with_mp(value: int) -> int:
     p.close()
     p.join()
     return sum(result)
-
-
