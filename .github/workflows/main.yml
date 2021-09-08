@@ -18,6 +18,6 @@ jobs:
           pip install flake8 isort pytest mypy
           ls -la
           flake8 .
-          mypy .
+          mypy . --install-types --non-interactive --ignore-missing-imports
           isort --check .
           py.test tests
