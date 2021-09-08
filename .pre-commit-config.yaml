@@ -3,6 +3,10 @@ repos:
       rev: 'v0.910'  
       hooks:
          - id: mypy
+           args:
+           - --install-types
+           - --non-interactive
+           - --ignore-missing-imports
     - repo: https://github.com/pre-commit/pre-commit-hooks
       rev: v2.3.0
       hooks:
