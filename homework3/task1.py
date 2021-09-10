@@ -14,17 +14,17 @@ def cache(times: int) -> Callable:
         Accepts a functions
         Returns cashed function
         """
-        cache: dict[tuple, str] = {}
+        cache_dict: dict[tuple, str] = {}
 
         @functools.wraps(func)
         def wrapper(*args):
-            if args in cache and cache[args][1] <= times:
-                result = cache[args][0]
-                cache[args][1] += 1
+            if args in cache_dict and cache_dict[args][1] <= times:
+                result = cache_dict[args][0]
+                cache_dict[args][1] += 1
             else:
                 result = func(*args)
                 count = 1
-                cache[args] = [result, count]
+                cache_dict[args] = [result, count]
             return result
         return wrapper
     return cache_decorator
