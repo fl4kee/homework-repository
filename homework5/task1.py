@@ -63,6 +63,7 @@ class Homework:
     def __init__(self, text, days):
         self.text = text
         self.days = days
+        self._created = datetime.datetime.now()
 
     @property
     def deadline(self):
@@ -70,7 +71,11 @@ class Homework:
 
     @property
     def created(self):
-        return datetime.datetime.now()
+        return self._created
+
+    @created.setter
+    def created(self, value):
+        self._created = value
 
     def is_active(self):
         current_time = datetime.datetime.now()
