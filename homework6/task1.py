@@ -14,6 +14,7 @@ def instances_counter(cls):
         counter = 0
 
         def __init__(self):
+            super().__init__()
             self.increase_counter()
 
         @classmethod
