@@ -13,8 +13,8 @@ def instances_counter(cls):
     class CounterClass(cls):
         counter = 0
 
-        def __init__(self):
-            super().__init__()
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, *kwargs)
             self.increase_counter()
 
         @classmethod

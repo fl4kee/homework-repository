@@ -10,3 +10,12 @@ def test_instances_counter():
     assert User.get_created_instances() == 3
     assert User.reset_instances_counter() == 3
     assert User.get_created_instances() == 0
+
+
+def test_attr():
+    @instances_counter
+    class User:
+        def __init__(self, name):
+            self.name = name
+    user = User('Vasya')
+    assert user.name == 'Vasya'
