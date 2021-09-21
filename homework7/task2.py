@@ -16,13 +16,14 @@ Examples:
 
 
 def backspace_compare(first: str, second: str):
-    def replace_backspace(string):
-        if '#' not in string:
-            return string
-        else:
-            if string.index('#') == 0:
-                string = string.replace('#', '', 1)
+    def change_string(string):
+        changed_string = []
+        for letter in string:
+            if letter != '#':
+                changed_string.append(letter)
+            elif string.index(letter) == 0:
+                continue
             else:
-                string = string.replace(string[string.index('#') - 1] + '#', '', 1)
-            return replace_backspace(string)
-    return replace_backspace(first) == replace_backspace(second)
+                changed_string.pop()
+            return ''.join(changed_string)
+    return(change_string(first) == change_string(second))

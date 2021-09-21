@@ -19,20 +19,59 @@ from itertools import chain
 from typing import List
 
 
-def tic_tac_toe_checker(field: List[List]) -> str:
-    def win_condition(player):
-        return field[0][0] == field[0][1] == field[0][2] == player or \
-            field[1][0] == field[1][1] == field[1][2] == player or \
-            field[2][0] == field[2][1] == field[2][2] == player or \
-            field[0][0] == field[1][0] == field[2][0] == player or \
-            field[0][1] == field[1][1] == field[2][1] == player or \
-            field[0][2] == field[1][2] == field[2][2] == player or \
-            field[0][0] == field[1][1] == field[2][2] == player or \
-            field[0][2] == field[1][1] == field[2][0] == player
+def rows_generator(field):
+    board_size = len(field[0])
+    for row in range(board_size):
+        yield field[row]
 
-    if win_condition('x'):
+
+def cols_generator(field):
+    board_size = len(field[0])
+    for i in range(board_size):
+        col = []
+        for j in range(board_size):
+            col.append(field[j][i])
+        yield col
+
+
+def get_diag(field):
+    board_size = len(field[0])
+    diag = []
+    for i in range(board_size):
+        diag.append(field[i][i])
+    return diag
+
+
+def get_side_diag(field):
+    board_size = len(field[0])
+    side_diag = []
+    for i in range(board_size):
+        side_diag.append(field[i][board_size - i - 1])
+    return side_diag
+
+
+def win_condition(field, player):
+    # Checks if winner is in some row
+    for row in rows_generator(field):
+        if all(box == player for box in row):
+            return True
+    # Checks if winner is in some column
+    for col in cols_generator(field):
+        if all(box == player for box in col):
+            return True
+    # Checks if winner is in diagonal
+    if all(box == player for box in get_diag(field)):
+        return True
+    # Checks if winner is in side diagonal
+    elif all(box == player for box in get_side_diag(field)):
+        return True
+    return False
+
+
+def tic_tac_toe_checker(field: List[List]) -> str:
+    if win_condition(field, 'x'):
         return 'x wins'
-    elif win_condition('o'):
+    elif win_condition(field, 'o'):
         return 'o wins'
     elif {'-'}.issubset(chain.from_iterable(field)):
         return 'unfinished'
