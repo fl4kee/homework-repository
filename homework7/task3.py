@@ -16,16 +16,14 @@ Example:
      Return value should be "x wins!"
 """
 from itertools import chain
-from typing import List
+from typing import Iterator, List
 
 
-def rows_generator(field):
-    board_size = len(field[0])
-    for row in range(board_size):
-        yield field[row]
+def rows_generator(field: List[List]) -> Iterator[List]:
+    yield from field
 
 
-def cols_generator(field):
+def cols_generator(field: List[List]) -> Iterator[List]:
     board_size = len(field[0])
     for i in range(board_size):
         col = []
@@ -34,7 +32,7 @@ def cols_generator(field):
         yield col
 
 
-def get_diag(field):
+def get_diag(field: List[List]) -> List:
     board_size = len(field[0])
     diag = []
     for i in range(board_size):
@@ -42,7 +40,7 @@ def get_diag(field):
     return diag
 
 
-def get_side_diag(field):
+def get_side_diag(field: List[List]) -> List:
     board_size = len(field[0])
     side_diag = []
     for i in range(board_size):
@@ -50,7 +48,7 @@ def get_side_diag(field):
     return side_diag
 
 
-def win_condition(field, player):
+def win_condition(field: List[List], player: str) -> bool:
     # Checks if winner is in some row
     for row in rows_generator(field):
         if all(box == player for box in row):
