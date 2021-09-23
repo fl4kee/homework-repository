@@ -16,62 +16,58 @@ Example:
      Return value should be "x wins!"
 """
 from itertools import chain
-from typing import Iterator, List
+from typing import List
 
 
-def rows_generator(field: List[List]) -> Iterator[List]:
-    yield from field
+def win_check(line: List[List]) -> str:
+    line_set = set(line)
+    if len(line_set) == 1 and '-' not in line_set:
+        return f'{list(line_set)[0]} wins'
+    return ''
 
 
-def cols_generator(field: List[List]) -> Iterator[List]:
+def win_by_row(field: List[List]) -> str:
+    for row in field:
+        win = win_check(row)
+        if win:
+            break
+    return win
+
+
+def win_by_col(field: List[List]) -> str:
     board_size = len(field[0])
     for i in range(board_size):
         col = []
         for j in range(board_size):
             col.append(field[j][i])
-        yield col
+        win = win_check(col)
+        if win:
+            break
+    return win
 
 
-def get_diag(field: List[List]) -> List:
+def win_by_diag(field: List[List]) -> str:
     board_size = len(field[0])
     diag = []
     for i in range(board_size):
         diag.append(field[i][i])
-    return diag
+    return win_check(diag)
 
 
-def get_side_diag(field: List[List]) -> List:
+def win_by_side_diag(field: List[List]) -> str:
     board_size = len(field[0])
     side_diag = []
     for i in range(board_size):
         side_diag.append(field[i][board_size - i - 1])
-    return side_diag
-
-
-def win_condition(field: List[List], player: str) -> bool:
-    # Checks if winner is in some row
-    for row in rows_generator(field):
-        if all(box == player for box in row):
-            return True
-    # Checks if winner is in some column
-    for col in cols_generator(field):
-        if all(box == player for box in col):
-            return True
-    # Checks if winner is in diagonal
-    if all(box == player for box in get_diag(field)):
-        return True
-    # Checks if winner is in side diagonal
-    elif all(box == player for box in get_side_diag(field)):
-        return True
-    return False
+    return win_check(side_diag)
 
 
 def tic_tac_toe_checker(field: List[List]) -> str:
-    if win_condition(field, 'x'):
-        return 'x wins'
-    elif win_condition(field, 'o'):
-        return 'o wins'
-    elif {'-'}.issubset(chain.from_iterable(field)):
+    result = win_by_row(field) or \
+        win_by_col(field) or \
+        win_by_diag(field) or \
+        win_by_side_diag(field)
+    if not result and {'-'}.issubset(chain.from_iterable(field)):
         return 'unfinished'
     else:
-        return 'draw'
+        return result or 'draw'
