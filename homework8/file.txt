@@ -1,8 +1,0 @@
-name=kek
-last_name=top
-power=9001
-song=shadilay
-1=something
-__doc__=built_in
-.asd=wrong_key
-.=wrong_key
