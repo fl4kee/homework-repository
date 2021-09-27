@@ -37,7 +37,6 @@ class TableData:
         next_row = self._current_row
         self._current_row += 1
         if self._current_row > self.__len__():
-            self.current_row = 0
             raise StopIteration
         name, age, country = self.get_data(next_row).fetchone()
         return {'name': name, 'age': age, 'country': country}
