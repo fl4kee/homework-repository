@@ -14,27 +14,13 @@
 # File size is expected to be small, you are permitted to read it entirely into memory.
 import re
 from pathlib import Path
-from typing import Iterable, Union
-
-
-class DotDict(dict):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def __getattr__(self, attr: str) -> Union[str, int]:
-        return self[attr]
-
-    def __setattr__(self, key: str, value: str) -> None:
-        self.__setitem__(key, value)
-
-    def __delattr__(self, key: str) -> None:
-        self.__delattr__(key)
+from typing import Dict, Iterable, Union
 
 
 class KeyValueStorage():
     """Class for saving attributes from a file"""
     def __init__(self, path: Path):
-        self.data_dict = DotDict({})
+        self.data_dict: Dict[str, Union[str, int]] = {}
         self.set_attributes(path)
 
     def set_attributes(self, path: Path) -> None:
