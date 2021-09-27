@@ -16,29 +16,34 @@
 # start reading the first record, then go to the next one, until records are exhausted.
 # When writing tests, it's not always neccessary to mock database calls completely.
 # Use supplied example.sqlite file as database fixture file.
-
 import sqlite3
+from pathlib import Path
+from typing import Tuple
 
 
 class TableData:
-    def __init__(self, db_name, table_name):
+    def __init__(self, db_name: Path, table_name: str):
         self.table_name = table_name
         self.c = sqlite3.connect(db_name).cursor()
+        self._current_row = 0
 
-    def get_data(self):
-        return self.c.execute(f"SELECT * FROM {self.table_name}")
+    def get_data(self, row: int) -> sqlite3.Cursor:
+        return self.c.execute(f"SELECT * FROM {self.table_name} LIMIT 1 OFFSET {row}")
 
-    def __iter__(self):
-        return self.get_data()
-
-    def __next__(self):
-        data = self.get_data()
+    def __iter__(self) -> Tuple:
+        data = self.get_data(self._current_row)
         return data.fetchone()
 
-    def __len__(self):
-        return sum(1 for _ in self.get_data())
+    def __next__(self) -> Tuple:
+        next_row = self._current_row
+        self._current_row += 1
+        data = self.get_data(next_row)
+        return data.fetchone()
 
-    def __getitem__(self, l_name):
-        for president in self.get_data():
-            if l_name in president:
-                return president
+    def __len__(self) -> int:
+        len_ = self.c.execute(f"SELECT COUNT(*) FROM {self.table_name}")
+        return len_.fetchone()[0]
+
+    def __getitem__(self, l_name: str) -> Tuple:
+        president = self.c.execute(f"SELECT * FROM {self.table_name} WHERE name LIKE '%{l_name}%'")
+        return president.fetchone()

@@ -11,3 +11,6 @@ def test_tabledata():
     assert isinstance(presidents, Iterable)
     assert len(presidents) == 3
     assert presidents['Yeltsin'] == ('Yeltsin', 999, 'Russia')
+    assert presidents.__next__() == ('Yeltsin', 999, 'Russia')
+    assert presidents.__next__() == ('Trump', 1337, 'US')
+    assert presidents.__next__() == ('Big Man Tyrone', 101, 'Kekistan')
