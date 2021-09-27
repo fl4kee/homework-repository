@@ -18,7 +18,7 @@
 # Use supplied example.sqlite file as database fixture file.
 import sqlite3
 from pathlib import Path
-from typing import Tuple
+from typing import Dict
 
 
 class TableData:
@@ -30,20 +30,22 @@ class TableData:
     def get_data(self, row: int) -> sqlite3.Cursor:
         return self.c.execute(f"SELECT * FROM {self.table_name} LIMIT 1 OFFSET {row}")
 
-    def __iter__(self) -> Tuple:
-        data = self.get_data(self._current_row)
-        return data.fetchone()
+    def __iter__(self):
+        return self
 
-    def __next__(self) -> Tuple:
+    def __next__(self) -> Dict:
         next_row = self._current_row
         self._current_row += 1
-        data = self.get_data(next_row)
-        return data.fetchone()
+        if self._current_row > self.__len__():
+            self.current_row = 0
+            raise StopIteration
+        name, age, country = self.get_data(next_row).fetchone()
+        return {'name': name, 'age': age, 'country': country}
 
     def __len__(self) -> int:
         len_ = self.c.execute(f"SELECT COUNT(*) FROM {self.table_name}")
         return len_.fetchone()[0]
 
-    def __getitem__(self, l_name: str) -> Tuple:
+    def __getitem__(self, l_name: str) -> Dict:
         president = self.c.execute(f"SELECT * FROM {self.table_name} WHERE name LIKE '%{l_name}%'")
         return president.fetchone()
