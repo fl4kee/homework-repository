@@ -18,12 +18,11 @@ def universal_file_counter(
 ) -> int:
     count: int = 0
     for file in os.listdir(dir_path):
-        if file.endswith('.txt'):
+        if file.endswith(file_extension):
             with open(os.path.join(dir_path, file), 'r') as f:
                 for line in f:
                     if tokenizer is None:
                         count += 1
                     else:
                         count += len(tokenizer(line))
-
     return count

@@ -17,7 +17,7 @@ def manage_input_files():
     with open(FILE2_DIR, 'w') as text_file2:
         text_file2.writelines(['2\n', '4\n', '6'])
     with open(FILE3_DIR, 'w') as text_file3:
-        text_file3.writelines(['12\n', '10\n', '8'])
+        text_file3.writelines(['8\n', '10\n', '12'])
     yield
     os.remove(FILE1_DIR)
     os.remove(FILE2_DIR)

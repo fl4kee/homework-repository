@@ -12,22 +12,14 @@ file2.txt:
 [1, 2, 3, 4, 5, 6]
 """
 from contextlib import ExitStack
-from functools import wraps
+from heapq import merge
 from pathlib import Path
-from typing import Callable, Iterator, List, Union
+from typing import Iterator, List, Union
 
 
-def sorted_gen(gen: Callable) -> Callable:
-    @wraps(gen)
-    def inner(*args):
-        return iter(sorted((gen(*args))))
-    return inner
-
-
-@sorted_gen
 def merge_sorted_files(file_list: List[Union[Path, str]]) -> Iterator:
     with ExitStack() as stack:
         files = [stack.enter_context(open(fname)) for fname in file_list]
-        for file in files:
-            for line in file:
-                yield int(line)
+        files_with_ints = [(int(line) for line in file) for file in files]
+        res = merge(*[list(file) for file in files_with_ints])
+    return iter(res)
