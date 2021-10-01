@@ -14,7 +14,7 @@ def find_maximal_subarray_sum(nums: List[int], subarray_len: int) -> int:
     # Array's length greater than 1, subarray's length greater than 1 but less then array's length
     if array_len > 1 and 1 < subarray_len <= array_len:
         # Initial max value
-        max_sum = sum(nums[0:2])
+        max_sum = sum(nums[0:subarray_len - 1])
         # i - start index
         for i in range(0, array_len - subarray_len + 1):
             # j - subarray's length
