@@ -20,6 +20,7 @@ from typing import Iterator, List, Union
 def merge_sorted_files(file_list: List[Union[Path, str]]) -> Iterator:
     with ExitStack() as stack:
         files = [stack.enter_context(open(fname)) for fname in file_list]
-        files_with_ints = [(int(line) for line in file) for file in files]
-        res = merge(*[list(file) for file in files_with_ints])
-    return iter(res)
+        files_with_ints = ((int(line) for line in file) for file in files)
+        res = merge(*files_with_ints)
+        for i in res:
+            yield i
