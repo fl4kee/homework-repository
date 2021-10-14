@@ -17,6 +17,8 @@ HEADERS = {
                */*;q=0.8,application/signed-exchange;v=b3;q=0.9'
 }
 
+
+current_date = datetime.datetime.now().strftime('%d.%m.%Y')
 # dict for currencies
 current_rate = {}
 # list for company data
@@ -34,7 +36,6 @@ async def get_current_rate(session, id):
     list of ids you can find here http://www.cbr.ru/scripts/XML_val.asp?d=0
     it returns current exchange rate in rubles
     """
-    current_date = datetime.datetime.now().strftime('%d.%m.%Y')
     curr_rates_url = f'https://www.cbr.ru/scripts/XML_daily.asp?date_req={current_date}'
     async with session.get(url=curr_rates_url, headers=HEADERS) as response:
         response_text = await response.text()
@@ -75,13 +76,13 @@ async def parse_details_page(session, url):
         return (code, pe, potential_profit)
 
 
-async def get_page_data(session, page):
+async def get_page_data(session, page, current_rate):
     page_url = BASE_URL + f'/index/components/s&p_500?p={str(page)}'
     # # async requests with  aiohttp
     async with session.get(url=page_url, headers=HEADERS) as response:
         response_text = await response.text()
 
-        # # Getting data from soup object
+        # #  Getting data from soup object
         soup = BeautifulSoup(response_text, 'lxml')
         company_items = soup.find('tbody', class_="table__tbody").find_all("tr")
         for ci in company_items:
@@ -91,7 +92,7 @@ async def get_page_data(session, page):
             company_name = company_data[0].find("a").text.strip()
             curr_price = round_float(float(company_data[1].text.split()[0]
                                                           .strip()
-                                                          .replace(',', '')) * current_rate['USD'])
+                                                          .replace(',', '')) * current_rate)
             code, pe, potential_profit = await parse_details_page(session, details_page_link)
             growth = round_float(float(company_data[-1].find("span").text.strip().replace(',', '')))
 
@@ -101,13 +102,14 @@ async def get_page_data(session, page):
                     "name": company_name,
                     "price": curr_price,
                     "P/E": pe,
-
                     "growth": growth,
                     "potential-profit": potential_profit
                 }
             )
 
     print(f"[INFO] {page} page is parsed")
+
+    return companies_data
 
 
 async def gather_data():
@@ -126,7 +128,7 @@ async def gather_data():
 
         # scrapper works for every page
         for page in range(1, pages_count + 1):
-            task = asyncio.create_task(get_page_data(session, page))
+            task = asyncio.create_task(get_page_data(session, page, current_rate['USD']))
             tasks.append(task)
 
         await asyncio.gather(*tasks)
@@ -165,10 +167,10 @@ def main():
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     asyncio.run(gather_data())
     # creating json files
-    create_file('10_most_expensive_stocks.json', most_expensv_cmpns)
-    create_file('10_lowest_p_e.json', lowest_pe)
-    create_file('10_highest_growth.json', highest_growth)
-    create_file('10_highest_profit.json', highest_profit)
+    create_file(f'10_most_expensive_stocks_{current_date}.json', most_expensv_cmpns)
+    create_file(f'10_lowest_p_e_{current_date}.json', lowest_pe)
+    create_file(f'10_highest_growth{current_date}.json', highest_growth)
+    create_file(f'10_highest_profit{current_date}.json', highest_profit)
 
 
 if __name__ == '__main__':
