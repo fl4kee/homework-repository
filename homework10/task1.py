@@ -9,8 +9,9 @@ from aiohttp import ClientSession
 from bs4 import BeautifulSoup  # type: ignore
 
 
-def round_float(float_num):
+def round_float_str(float_str):
     """Rounds incoming float to 2 digits after floating point"""
+    float_num = float(float_str)
     return float(f"{float_num:.2f}")
 
 
@@ -49,7 +50,7 @@ class WebScraper:
 
     async def fetch_details_page(self,
                                  session: ClientSession,
-                                 url: str) -> tuple[str, Union[float, str], Union[str, float]]:
+                                 url: str) -> tuple[str, str, str]:
         """
         Takes url of details page and returns code, P\\E and potential profit in tuple
         """
@@ -65,7 +66,7 @@ class WebScraper:
 
     async def fetch(self, session: ClientSession, url: str) -> None:
         """
-        Takes url of a page and parses
+        Takes url of a page parses
         and adds all information about one company in list with parsed data
         """
         async with session.get(url) as response:
@@ -84,61 +85,61 @@ class WebScraper:
                 self.parsed_data.append({
                     "code": code,
                     "name": name,
-                    "price": price,
-                    "P/E": pe,
-                    "growth": growth,
-                    "potential-profit": potential_profit
+                    "price": round_float_str(price) * self.current_rate,
+                    "P/E": round_float_str(pe),
+                    "growth": round_float_str(growth),
+                    "potential-profit": round_float_str(potential_profit) * self.current_rate
                 })
 
-    def get_company_potential_profit(self, data: BeautifulSoup) -> Union[str, float]:
+    def get_company_potential_profit(self, data: BeautifulSoup) -> str:
         """
         function parses potential profit of company
         if there is no information to parse returns coresponding message
         """
         try:
-            week_high: Union[float, None] = float(data.find("div", string="52 Week High")
-                                                      .parent
-                                                      .find(text=True)
-                                                      .strip()
-                                                      .replace(',', ''))
+            week_high: Union[str, None] = (data.find("div", string="52 Week High")
+                                               .parent
+                                               .find(text=True)
+                                               .strip()
+                                               .replace(',', ''))
         except AttributeError:
             week_high = None
         try:
-            week_low: Union[float, None] = float(data.find("div", string="52 Week Low")
-                                                     .parent
-                                                     .find(text=True)
-                                                     .strip()
-                                                     .replace(',', ''))
+            week_low: Union[str, None] = (data.find("div", string="52 Week Low")
+                                              .parent
+                                              .find(text=True)
+                                              .strip()
+                                              .replace(',', ''))
         except AttributeError:
             week_low = None
 
         if week_high and week_low:
-            potential_profit = round_float((week_high - week_low) * self.current_rate)
+            potential_profit = str((float(week_high) - float(week_low)))
         else:
             potential_profit = 'No data for calculating potential profit'
 
         return potential_profit
 
-    def get_company_growth(self, data: BeautifulSoup) -> Union[float, str]:
+    def get_company_growth(self, data: BeautifulSoup) -> str:
         """
         function parses potential growth of company
         if there is no information to parse returns coresponding message
         """
         try:
-            return round_float(float(data[-1].find("span").text.strip().replace(',', '')))
+            return (data[-1].find("span").text.strip().replace(',', ''))
         except AttributeError:
             return 'No growth data for this company'
 
-    def get_company_pe(self, data: BeautifulSoup) -> Union[float, str]:
+    def get_company_pe(self, data: BeautifulSoup) -> str:
         """
         function parses P\\E of company
         if there is no information to parse returns coresponding message
         """
         try:
-            return round_float(float(data.find("div", string="P/E Ratio").parent
-                                                                         .find(text=True)
-                                                                         .strip()
-                                                                         .replace(',', '')))
+            return (data.find("div", string="P/E Ratio").parent
+                                                        .find(text=True)
+                                                        .strip()
+                                                        .replace(',', ''))
         except AttributeError:
             return 'No P/E data for this company'
 
@@ -194,15 +195,15 @@ class WebScraper:
             return int(soup.find("div", class_="finando_paging margin-top--small")
                            .find_all("a")[-2].text)
 
-    def get_company_price(self, data: BeautifulSoup) -> Union[float, str]:
+    def get_company_price(self, data: BeautifulSoup) -> str:
         """
         function parses price of company
         if there is no information to parse returns coresponding message
         """
         try:
-            return round_float(float(data[1].text.split()[0]
-                                            .strip()
-                                            .replace(',', '')) * self.current_rate)
+            return (data[1].text.split()[0]
+                           .strip()
+                           .replace(',', ''))
         except AttributeError:
             return 'No price for this company'
 
