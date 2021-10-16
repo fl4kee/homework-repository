@@ -12,3 +12,5 @@ def test_order_strategy():
     assert order_1.final_price() == 75
     order_2 = Order(100, elder_discount)
     assert order_2.final_price() == 10
+    order_3 = Order(100)
+    assert order_3.final_price() == 100

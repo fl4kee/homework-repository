@@ -22,9 +22,11 @@ assert order_2.final_price() == 10
 
 
 class Order:
-    def __init__(self, price, discount_strategy):
+    def __init__(self, price, discount_strategy=None):
         self.price = price
         self.discount_strategy = discount_strategy
 
     def final_price(self) -> float:
-        return self.discount_strategy(self.price)
+        if self.discount_strategy:
+            return self.discount_strategy(self.price)
+        return self.price
