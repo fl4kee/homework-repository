@@ -68,21 +68,14 @@ def test_webscraper(mock_aioresponse, mocker):
         data = WebScraper(current_date).parsed_data
         Data(data).create_files()
 
-        with open(os.path.join(os.path.dirname(__file__),
-                  '../../10_highest_growth.json')) as f:
-            assert test_10_highest_growth == f.readlines()
-
-        with open(os.path.join(os.path.dirname(__file__),
-                  '../../10_highest_profit.json')) as f:
-            assert test_10_highest_profit == f.readlines()
-
-        with open(os.path.join(os.path.dirname(__file__),
-                  '../../10_lowest_p_e_.json')) as f:
-            assert test_10_10_lowest_p_e == f.readlines()
-
-        with open(os.path.join(os.path.dirname(__file__),
-                  '../../10_most_expensive_stocks_.json')) as f:
-            assert test_10_most_expensive_stocks == f.readlines()
+        assert test_10_highest_growth == read_json(os.path.join(os.path.dirname(__file__),
+                                                   '../../10_highest_growth.json'))
+        assert test_10_highest_profit == read_json(os.path.join(os.path.dirname(__file__),
+                                                   '../../10_highest_profit.json'))
+        assert test_10_10_lowest_p_e == read_json(os.path.join(os.path.dirname(__file__),
+                                                  '../../10_lowest_p_e_.json'))
+        assert test_10_most_expensive_stocks == read_json(os.path.join(os.path.dirname(__file__),
+                                                          '../../10_most_expensive_stocks_.json'))
     finally:
         os.remove('10_highest_growth.json')
         os.remove('10_highest_profit.json')
