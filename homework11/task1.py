@@ -24,7 +24,7 @@ assert SizesEnum.XL == "XL"
 
 
 class SimplifiedEnum(type):
-    def __new__(cls, class_name, parents, attrs):
+    def __new__(cls: type, class_name: str, parents: tuple, attrs: dict) -> 'SimplifiedEnum':
         dict_ = {}
         attrs_name = f'_{class_name}__keys'
         if attrs_name in attrs:

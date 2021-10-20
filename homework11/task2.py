@@ -19,10 +19,11 @@ assert order_1.final_price() == 75
 order_2 = Order(100, elder_discount)
 assert order_2.final_price() == 10
 """
+from typing import Callable, Union
 
 
 class Order:
-    def __init__(self, price, discount_strategy=None):
+    def __init__(self, price: float, discount_strategy: Union[Callable, None] = None) -> None:
         self.price = price
         self.discount_strategy = discount_strategy
 
