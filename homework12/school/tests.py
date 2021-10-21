@@ -1,10 +1,11 @@
 import datetime
 
 from django.test import TestCase
+from school.management.commands.create_report import get_report
 from school.models import Homework, HomeworkResult, Student, Teacher
 
 
-class AnimalTestCase(TestCase):
+class SchoolTestCase(TestCase):
     def setUp(self):
         Student.objects.create(firstname="Иван", lastname="Петров")
         Teacher.objects.create(firstname="Петр", lastname="Иванов")
@@ -49,3 +50,11 @@ class AnimalTestCase(TestCase):
         self.assertEqual(homework_result.completed_date.strftime('%Y-%m-%d %H:%M'),
                          '2025-10-25 12:49')
         self.assertEqual(homework_result.solution, 'Solution for the hw')
+
+    def test_create_report(self):
+        report = get_report()
+        self.assertEqual(report, [{
+            'student': 'Иван Петров',
+            'teacher': 'Петр Иванов',
+            'created': datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+        }])

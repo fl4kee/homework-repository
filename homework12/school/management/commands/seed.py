@@ -23,7 +23,6 @@ class Command(BaseCommand):
 
 def clear_data():
     """Deletes all the table data"""
-    print("Delete Address instances")
     Student.objects.all().delete()
     Teacher.objects.all().delete()
     Homework.objects.all().delete()
