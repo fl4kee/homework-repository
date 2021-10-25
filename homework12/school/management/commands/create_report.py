@@ -10,23 +10,21 @@ class Command(BaseCommand):
         create_report(self)
 
 
-def get_report():
+def get_report() -> list:
 
     homework_results = HomeworkResult.objects.all()
     homework_results_list = []
 
     for homework_result in homework_results:
         homework_dict = {}
-        homework_dict['student'] = homework_result.student.firstname + ' ' +\
-            homework_result.student.lastname
-        homework_dict['teacher'] = homework_result.teacher.firstname + ' ' +\
-            homework_result.teacher.lastname
+        homework_dict['student'] = str(homework_result.student)
+        homework_dict['teacher'] = str(homework_result.teacher)
         homework_dict['created'] = homework_result.homework.created.strftime('%Y-%m-%d %H:%M')
         homework_results_list.append(homework_dict)
     return homework_results_list
 
 
-def report_to_csv(report):
+def report_to_csv(report: list) -> None:
     keys = report[0].keys()
     with open('homework-results.csv', 'w', newline='') as csvfile:
         dict_writer = csv.DictWriter(csvfile, keys)

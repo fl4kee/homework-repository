@@ -5,7 +5,7 @@ homework12
 Quick start
 -----------
 
-1 Run pip install requirements.txt to install all dependencies
+1 Run pip install -r requirements.txt to install all dependencies
 
 2. To seed data run manage.py seed --mode=refresh
 
