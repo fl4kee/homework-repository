@@ -7,7 +7,7 @@ Quick start
 
 1. To create virtual environment run python3 -m venv venv
 
-2. To activate it run .\venv\Scripts\activate
+2. To activate it run .\\venv\\Scripts\\activate
 
 3 Run pip install -r requirements.txt to install all dependencies
 
